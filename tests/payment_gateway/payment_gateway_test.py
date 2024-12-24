@@ -11,7 +11,7 @@ from src.endpoint.payment_gateway.request_types.unverified_request import Unveri
 from src.endpoint.payment_gateway.request_types.verify_request import VerifyRequest
 
 
-class PaymentGatewayTest(unittest.TestCase):
+class PaymentGatewayTest(unittest.TestCase, Options):
     def setUp(self):
 
         super().setUp()
