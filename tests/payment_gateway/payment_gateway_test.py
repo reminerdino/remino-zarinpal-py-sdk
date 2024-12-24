@@ -18,7 +18,7 @@ class PaymentGatewayTest(unittest.TestCase, Options):
 
         self.client_mock = Mock()
 
-        zarinpal = ZarinPal(self.get_options())
+        zarinpal = ZarinPal(Options)
         zarinpal.set_http_client(self.client_mock)
 
         self.gateway = PaymentGateway(zarinpal)
