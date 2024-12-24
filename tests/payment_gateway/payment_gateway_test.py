@@ -12,13 +12,14 @@ from src.endpoint.payment_gateway.request_types.verify_request import VerifyRequ
 
 
 class PaymentGatewayTest(unittest.TestCase, Options):
+
     def setUp(self):
 
         super().setUp()
 
         self.client_mock = Mock()
 
-        zarinpal = ZarinPal(Options)
+        zarinpal = ZarinPal()
         zarinpal.set_http_client(self.client_mock)
 
         self.gateway = PaymentGateway(zarinpal)
@@ -45,13 +46,11 @@ class PaymentGatewayTest(unittest.TestCase, Options):
 
         self.client_mock.post.return_value = self.create_mock_response(response_body)
 
-        request = RequestRequest()
-        request.amount = 10000
-        request.description = 'Test Payment'
-        request.callback_url = 'https://callback.url'
-        request.mobile = '09370000000'
-        request.email = 'test@example.com'
-
+        request = RequestRequest(
+            amount = 100000,
+            description='Test Payment',
+            callback_url= 'https://callback.url'
+        )
         response = self.gateway.request(request)
         self.assertEqual('A0000000000000000000000000012b4A6', response.authority)
 
@@ -67,10 +66,7 @@ class PaymentGatewayTest(unittest.TestCase, Options):
 
         self.client_mock.post.return_value = self.create_mock_response(response_body)
 
-        verify = VerifyRequest()
-        verify.amount = 15000
-        verify.authority = 'A000000000000000000000000000ydq5y838'
-
+        verify = VerifyRequest(amount=15000, authority='A000000000000000000000000000ydq5y838')
         response = self.gateway.verify(verify)
         self.assertEqual(100, response.code)
 
@@ -128,8 +124,9 @@ class PaymentGatewayTest(unittest.TestCase, Options):
 
         self.client_mock.post.return_value = self.create_mock_response(response_body)
 
-        reverse_request = ReverseRequest()
-        reverse_request.authority = 'A000000000000000000000000000ydq5y838'
+        reverse_request = ReverseRequest(
+            authority='A000000000000000000000000000ydq5y838'
+        )
 
         response = self.gateway.reverse(reverse_request)
         self.assertEqual('Success', response.status)
