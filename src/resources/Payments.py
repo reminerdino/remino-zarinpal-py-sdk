@@ -1,5 +1,5 @@
 from typing import Dict, Any
-from ..Zarinpal import ZarinPal
+from ..zarinpal import ZarinPal
 
 
 class Payments:

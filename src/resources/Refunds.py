@@ -1,4 +1,4 @@
-from src.Zarinpal import ZarinPal
+from src.zarinpal import ZarinPal
 from src.utils.Validator import Validator
 
 class Refunds:
