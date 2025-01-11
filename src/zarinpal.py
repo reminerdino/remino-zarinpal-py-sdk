@@ -1,79 +1,160 @@
 import requests
 from typing import Optional
+from .utils.Config import Config
+import logging
 
-
-class Options:
-    def __init__(self, base_url: str = "https://api.zarinpal.com", merchant_id: Optional[str] = None):
-        self.base_url = base_url
-        self.merchant_id = merchant_id
-        self.headers = {
-            "User-Agent": f"ZarinPalSdk/v.1.0 (python {self.get_python_version()})",
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-        }
-
-    def get_base_url(self) -> str:
-        return self.base_url
-
-    def get_merchant_id(self) -> Optional[str]:
-        return self.merchant_id
-
-    def get_python_version(self) -> str:
-        import sys
-        return sys.version
 
 
 class ZarinPal:
-    USER_AGENT = f"ZarinPalSdk/v.1.0 (python)"
+    def __init__(self, config: Config):
+        """
+        Initializes the ZarinPal SDK.
+        :param config: An instance of Config class containing merchant ID, access token, and sandbox mode.
+        """
+        self.config = config
+        self.base_url = "https://sandbox.zarinpal.com" if self.config.sandbox else "https://payment.zarinpal.com"
+        self.graphql_url = "https://next.zarinpal.com/api/v4/graphql/"
 
-    def __init__(self, options: Optional[Options] = None):
-        self.options = options or Options()
         self.http_client = requests.Session()
-        self.http_client.headers.update(self.options.headers)
+        self.http_client.headers.update({
+            'User-Agent': 'ZarinPalSdk/v1 (Python)',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        })
 
-    def get_class_name(self) -> str:
-        return self.__class__.__name__
+        self.graphql_client = requests.Session()
+        self.graphql_client.headers.update({
+            'User-Agent': 'ZarinPalSdk/v1 (Python)',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': f'Bearer {self.config.access_token}',
+        })
+        self._payments = None
+        self._inquiries = None
+        self._refunds = None
+        self._transactions = None
+        self._reversals = None
+        self._unverified = None
+        self._verifications = None
 
-    def get_options(self) -> Options:
-        return self.options
+    @property
+    def payments(self):
+        if self._payments is None:
+            from .resources.Payments import Payments
+            self._payments = Payments(self)
+        return self._payments
 
-    def payment_gateway(self) -> 'PaymentGateway':
-        return PaymentGateway(self)
+    @property
+    def inquiries(self):
+        if self._inquiries is None:
+            from .resources.Inquiries import Inquiries
+            self._inquiries = Inquiries(self)
+        return self._inquiries
 
-    def transaction_service(self) -> 'TransactionService':
-        return TransactionService(self.http_client, self.options)
+    @property
+    def refunds(self):
+        if self._refunds is None:
+            from .resources.Refunds import Refunds
+            self._refunds = Refunds(self)
+        return self._refunds
 
-    def refund_service(self) -> 'RefundService':
-        return RefundService(self.http_client, self.options)
+    @property
+    def transactions(self):
+        if self._transactions is None:
+            from .resources.Transactions import Transactions
+            self._transactions = Transactions(self)
+        return self._transactions
 
-    def get_merchant_id(self) -> Optional[str]:
-        return self.options.get_merchant_id()
+    @property
+    def reversals(self):
+        if self._reversals is None:
+            from .resources.Reverses import Reversals
+            self._reversals = Reversals(self)
+        return self._reversals
 
-    def get_http_client(self) -> requests.Session:
-        return self.http_client
+    @property
+    def unverified(self):
+        if self._unverified is None:
+            from .resources.Unverified import Unverified
+            self._unverified = Unverified(self)
+        return self._unverified
 
-    def set_http_client(self, client: requests.Session) -> None:
-        self.http_client = client
+    @property
+    def verifications(self):
+        if self._verifications is None:
+            from .resources.Verifications import Verifications
+            self._verifications = Verifications(self)
+        return self._verifications
 
+    def request(self, method: str, endpoint: str, data: Optional[dict] = None) -> dict:
+        """
+        General method for making REST API requests to ZarinPal.
+        :param method: HTTP method (e.g., 'GET', 'POST').
+        :param endpoint: API endpoint relative to the base URL.
+        :param data: Request payload as a dictionary.
+        :return: Response data as a dictionary.
+        """
+        url = f"{self.base_url}{endpoint}"
+        payload = {'merchant_id': self.config.merchant_id, **(data or {})}
 
-class PaymentGateway:
-    def __init__(self, sdk: ZarinPal):
-        self.sdk = sdk
+        try:
+            response = self.http_client.request(method=method, url=url, json=payload)
+            response.raise_for_status()
+            return response.json()
+        
+        except requests.HTTPError as http_err:
+            if http_err.response is not None:
+                try:
+                    error_content = http_err.response.json()
+                except ValueError:
+                    error_content = http_err.response.text
+                logging.error(f"SandBox API HTTP error: {http_err} - Response Content: {error_content}")
+            else:
+                logging.error(f"SandBox API HTTP error without response: {http_err}")
+            raise RuntimeError(f"SandBox API request error: {http_err}") from http_err
+        except requests.RequestException as req_err:
+            logging.exception(f"SandBox API Request exception: {req_err}")
+            raise RuntimeError(f"SandBox API request error: {req_err}") from req_err
+        except Exception as e:
+            logging.exception(f"Unexpected error during SandBox API request: {e}")
+            raise RuntimeError(f"Unexpected error: {e}") from e
 
+    def graphql(self, query: str, variables: Optional[dict] = None) -> dict:
+        """
+        General method for making GraphQL API requests to ZarinPal.
+        :param query: GraphQL query string.
+        :param variables: Variables for the GraphQL query as a dictionary.
+        :return: Response data as a dictionary.
+        """
+        payload = {"query": query, "variables": variables or {}}
 
+        try:
+            response = self.graphql_client.post(self.graphql_url, json=payload)
+            response.raise_for_status()
+            return response.json()
 
+        except requests.HTTPError as http_err:
+            if http_err.response is not None:
+                try:
+                    error_content = http_err.response.json()
+                except ValueError:
+                    error_content = http_err.response.text
+                logging.error(f"GraphQL API HTTP error: {http_err} - Response Content: {error_content}")
+            else:
+                logging.error(f"GraphQL API HTTP error without response: {http_err}")
+            raise RuntimeError(f"GraphQL API request error: {http_err}") from http_err
+        except requests.RequestException as req_err:
+            logging.exception(f"GraphQL API Request exception: {req_err}")
+            raise RuntimeError(f"GraphQL API request error: {req_err}") from req_err
+        except Exception as e:
+            logging.exception(f"Unexpected error during GraphQL API request: {e}")
+            raise RuntimeError(f"Unexpected error: {e}") from e
+        
+        
 
-class TransactionService:
-    def __init__(self, http_client: requests.Session, options: Options):
-        self.http_client = http_client
-        self.options = options
-
-
-
-
-class RefundService:
-    def __init__(self, http_client: requests.Session, options: Options):
-        self.http_client = http_client
-        self.options = options
-
-
+    def get_base_url(self) -> str:
+        """
+        Getter for the base URL.
+        :return: Base URL as a string.
+        """
+        return self.base_url
