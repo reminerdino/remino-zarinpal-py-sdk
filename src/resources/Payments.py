@@ -35,3 +35,13 @@ class Payments:
 
         # Make the API request
         return self.zarinpal.request("POST", self.endpoint, data)
+
+      
+    def generate_payment_url(self, authority: str) -> str:
+        """
+        Generate the payment URL using the authority code.
+        :param authority: The authority code for the transaction.
+        :return: The complete payment URL.
+        """
+        start_pay_url = "/pg/StartPay/"
+        return f"{self.zarinpal.base_url}{start_pay_url}{authority}"
