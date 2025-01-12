@@ -16,7 +16,7 @@ class Payments:
         self.endpoint = '/pg/v4/payment/request.json'
 
     def create(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        from ..utils.Validator import Validator
+        from utils.Validator import Validator
         """
         Create a new payment request.
         :param data: A dictionary containing payment details:
