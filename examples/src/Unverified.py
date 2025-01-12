@@ -4,7 +4,7 @@ from utils.Config import Config
 def get_unverified_payments():
     try:
         config = Config(
-            merchant_id="Your Merchent Id", 
+            merchant_id="Your merchant code", 
             sandbox=True,
         )
         zarinpal = ZarinPal(config)

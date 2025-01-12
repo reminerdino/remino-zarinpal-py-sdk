@@ -6,7 +6,7 @@ from utils.Config import Config
 def initiate_payment():
     try:
         config = Config(
-            merchant_id="efb22724-c8d3-46c8-a4e7-f87b0e07748e",  
+            merchant_id="your merchant code",  
             sandbox=True,  
         )
         zarinpal = ZarinPal(config)

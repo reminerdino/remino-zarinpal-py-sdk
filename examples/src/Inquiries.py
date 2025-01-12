@@ -4,7 +4,7 @@ from utils.Config import Config
 def inquire_transaction():
     try:
         config = Config(
-            merchant_id= "223baac2-92a4-4f09-a8bf-0e43dc5b1144",  
+            merchant_id= "Your merchant code",  
             sandbox=True,  
         )
         zarinpal = ZarinPal(config)

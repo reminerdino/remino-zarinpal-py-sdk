@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zarinpal-py-sdk',               
-    version='0.1.6',                      
+    version='0.1.7',                      
     packages=find_packages(where="src"), 
     include_package_data=True,  
     py_modules=['zarinpal'],   
