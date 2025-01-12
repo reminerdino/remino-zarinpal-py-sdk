@@ -1,5 +1,5 @@
-from src.zarinpal import ZarinPal
-from src.utils.Config import Config
+from zarinpal import ZarinPal
+from utils.Config import Config
 
 def process_refund():
     try:
