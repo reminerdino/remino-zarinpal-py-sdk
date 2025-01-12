@@ -2,11 +2,11 @@ from setuptools import setup, find_packages
 
 setup(
     name='zarinpal-py-sdk',               
-    version='0.1.7',                      
-    packages=find_packages(where="src"), 
+    version='0.1.9',                      
+    packages=find_packages(where="src/zarinpal-py-sdk"), 
     include_package_data=True,  
     py_modules=['zarinpal'],   
-    package_dir={"": "src"},              
+    package_dir={"": "src/zarinpal-py-sdk"},              
     install_requires=[
         "anyio==4.7.0",
         "attrs==24.2.0",
