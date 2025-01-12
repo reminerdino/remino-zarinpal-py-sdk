@@ -17,7 +17,7 @@ class Validator:
             raise ValueError('Invalid authority format. It should be a string starting with \'A\' or \'S\' followed by 35 alphanumeric characters.')
         
     @staticmethod
-    def validate_amount(amount: float, min_amount: float = 20000) -> None:
+    def validate_amount(amount: float, min_amount: float = 10000) -> None:
         if amount < min_amount:
             raise ValueError(f'Amount must be at least {min_amount}.')
 
