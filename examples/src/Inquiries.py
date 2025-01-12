@@ -18,7 +18,7 @@ def inquire_transaction():
     except Exception as e:
         print("Error during inquiry:", e)
         if hasattr(e, "response"):
-            print("Error Details:", e.response.text)
+            print("Error Details:", e)
         else:
             print("No additional error details available.")
 

@@ -80,7 +80,7 @@ setup(
     description='A Python SDK for Zarinpal Payment Gateway',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    url='https://github.com/your-repo/zarinpal-py-sdk',  
+    url='https://github.com/ImanAttary/zarinpal_py_sdk',  
     classifiers=[
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
