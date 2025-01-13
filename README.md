@@ -16,66 +16,71 @@ The **Zarinpal Python SDK** provides an easy and flexible way to interact with Z
 **From PyPI**:
 ```bash
 pip install zarinpal-py-sdk
+```
 
-From TestPyPI (for testing purposes):
-
+**From TestPyPI (for testing purposes)**:
+```bash
 pip install -i https://test.pypi.org/simple/ zarinpal-py-sdk
 ```
 
 ### **Features**:
 
-1. Manage Payments
+1. **Manage Payments**:
 
-Easily initiate and verify payments using secure APIs.
+    Easily initiate and verify payments using secure APIs.
 
-Example:
+    Example:
+    ```python
+    payment = zarinpal.payment_gateway.create({  
+        "amount": 10000,  
+        "description": "Order #1234",  
+        "callback_url": "https://example.com/callback",  
+    })
+    ```
 
-payment = zarinpal.payment_gateway.create({  
-    "amount": 10000,  
-    "description": "Order #1234",  
-    "callback_url": "https://example.com/callback",  
-})
+2. **Transaction Management**:
 
-2. Transaction Management
+    Fetch transaction details with filters, limits, and pagination using GraphQL.
 
-Fetch transaction details with filters, limits, and pagination using GraphQL.
+    Example:
+    ```python
+    transactions = zarinpal.transactions.list({  
+        "terminal_id": "YourTerminalID",  
+        "filter": "PAID",  
+        "limit": 10,  
+        "offset": 0,  
+    })
+    ```
 
-Example:
+3. **Refunds & Reversals**:
 
-transactions = zarinpal.transactions.list({  
-    "terminal_id": "YourTerminalID",  
-    "filter": "PAID",  
-    "limit": 10,  
-    "offset": 0,  
-})
+    Easily process refunds or reverse a transaction with a single API call.
 
-3. Refunds & Reversals
+    Example - Refund:
+    ```python
+    refund = zarinpal.refunds.create({  
+        "session_id": "Session1234",  
+        "amount": 5000,  
+        "description": "Refund for Order #1234",  
+        "reason": "CUSTOMER_REQUEST",  
+    })
 
-Easily process refunds or reverse a transaction with a single API call.
+    Example - Reversal:
 
-Example - Refund:
+    response = zarinpal.reversals.reverse({  
+        "authority": "AUTHORITY_CODE",  
+    })
+    ```
 
-refund = zarinpal.refunds.create({  
-    "session_id": "Session1234",  
-    "amount": 5000,  
-    "description": "Refund for Order #1234",  
-    "reason": "CUSTOMER_REQUEST",  
-})
+4. **Sandbox Support**:
 
-Example - Reversal:
+    Easily switch between sandbox and live environments for development and production.
 
-response = zarinpal.reversals.reverse({  
-    "authority": "AUTHORITY_CODE",  
-})
+## **How to Use**:
 
-4. Sandbox Support
+5. **Initialize SDK**:
 
-Easily switch between sandbox and live environments for development and production.
-
-How to Use
-
-5. Initialize SDK
-
+```bash
 from zarinpal import ZarinPal  
 from utils.Config import Config  
 
@@ -111,7 +116,7 @@ def get_transactions():
 
 if __name__ == "__main__":  
     get_transactions()
-
+```
 ### **Contribute**:
 
 Contributions are welcome! Fork the repository, make your changes, and submit a pull request.
