@@ -20,8 +20,9 @@ pip install zarinpal-py-sdk
 From TestPyPI (for testing purposes):
 
 pip install -i https://test.pypi.org/simple/ zarinpal-py-sdk
+```
 
-Features
+### **Features**:
 
 1. Manage Payments
 
@@ -73,7 +74,7 @@ Easily switch between sandbox and live environments for development and producti
 
 How to Use
 
-Initialize SDK
+5. Initialize SDK
 
 from zarinpal import ZarinPal  
 from utils.Config import Config  
@@ -111,7 +112,7 @@ def get_transactions():
 if __name__ == "__main__":  
     get_transactions()
 
-Contribute
+### **Contribute**:
 
 Contributions are welcome! Fork the repository, make your changes, and submit a pull request.
 
