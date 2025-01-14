@@ -1,5 +1,5 @@
 from typing import Dict, Any
-from ..zarinpal import ZarinPal
+from zarinpal import ZarinPal
 
 
 class Payments:
@@ -16,7 +16,7 @@ class Payments:
         self.endpoint = '/pg/v4/payment/request.json'
 
     def create(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        from ..utils.Validator import Validator
+        from utils.Validator import Validator
         """
         Create a new payment request.
         :param data: A dictionary containing payment details:
@@ -35,3 +35,13 @@ class Payments:
 
         # Make the API request
         return self.zarinpal.request("POST", self.endpoint, data)
+
+      
+    def generate_payment_url(self, authority: str) -> str:
+        """
+        Generate the payment URL using the authority code.
+        :param authority: The authority code for the transaction.
+        :return: The complete payment URL.
+        """
+        start_pay_url = "/pg/StartPay/"
+        return f"{self.zarinpal.base_url}{start_pay_url}{authority}"

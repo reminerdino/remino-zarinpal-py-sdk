@@ -1,5 +1,5 @@
 from typing import Dict, Any
-from ..Zarinpal import ZarinPal
+from zarinpal import ZarinPal
 
 class Inquiries:
     """
@@ -24,7 +24,7 @@ class Inquiries:
         :raises RuntimeError: If the API call fails.
         """
         # Avoid circular import by importing Validator here
-        from src.utils.Validator import Validator
+        from utils.Validator import Validator
 
         # Validate input data
         if "authority" not in data:

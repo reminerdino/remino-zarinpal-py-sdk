@@ -2,9 +2,11 @@ from setuptools import setup, find_packages
 
 setup(
     name='zarinpal-py-sdk',               
-    version='0.1.0',                      
-    packages=find_packages(where="src"),  
-    package_dir={"": "src"},              
+    version='0.2.3',                      
+    packages=find_packages(where="src/zarinpal-py-sdk"), 
+    include_package_data=True,  
+    py_modules=['zarinpal'],   
+    package_dir={"": "src/zarinpal-py-sdk"},              
     install_requires=[
         "anyio==4.7.0",
         "attrs==24.2.0",
@@ -80,11 +82,11 @@ setup(
     description='A Python SDK for Zarinpal Payment Gateway',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    url='https://github.com/your-repo/zarinpal-py-sdk',  
+    url='https://github.com/ImanAttary/zarinpal_py_sdk',  
     classifiers=[
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
     ],
-    python_requires='>=3.7',              
+    python_requires='>=3.12',              
 )

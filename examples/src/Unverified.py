@@ -1,10 +1,10 @@
-from src.zarinpal import ZarinPal
-from src.utils.Config import Config
+from zarinpal import ZarinPal
+from utils.Config import Config
 
 def get_unverified_payments():
     try:
         config = Config(
-            merchant_id="Your Merchent Id", 
+            merchant_id="Your merchant code", 
             sandbox=True,
         )
         zarinpal = ZarinPal(config)

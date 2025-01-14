@@ -1,5 +1,5 @@
-from src.zarinpal import ZarinPal
-from src.utils.Validator import Validator
+from zarinpal import ZarinPal
+from utils.Validator import Validator
 
 class Refunds:
     def __init__(self, zarinpal: ZarinPal):

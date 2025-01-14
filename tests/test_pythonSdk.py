@@ -1,8 +1,8 @@
 import pytest
 import requests_mock
-from src.utils.Config import Config
-from src.zarinpal import ZarinPal
-from src.utils.Validator import Validator
+from utils.Config import Config
+from zarinpal import ZarinPal
+from utils.Validator import Validator
 
 
 
@@ -101,8 +101,8 @@ def test_create_payment_request_invalid_callback_url(zarinpal):
 # Refunds Tests
 def test_create_refund_success(zarinpal, mock_graphql_client):
     refund_data = {
-        'sessionId': 'session-id',
-        'amount': 5000,
+        'session_id': 'session_id',
+        'amount': 50000,
         'description': 'Refund for order #1234',
         'method': 'CARD',
         'reason': 'CUSTOMER_REQUEST',
@@ -110,11 +110,11 @@ def test_create_refund_success(zarinpal, mock_graphql_client):
     response_data = {
         'data': {
             'resource': {
-                'terminal_id': 'terminal-id',
-                'id': 'refund-id',
-                'amount': 5000,
+                'terminal_id': 'terminal_id',
+                'id': 'refund_id',
+                'amount': 50000,
                 'timeline': {
-                    'refund_amount': 5000,
+                    'refund_amount': 50000,
                     'refund_time': '2023-01-01T00:00:00Z',
                     'refund_status': 'COMPLETED',
                 },
@@ -131,8 +131,8 @@ def test_create_refund_success(zarinpal, mock_graphql_client):
 
 def test_create_refund_invalid_method(zarinpal):
     refund_data = {
-        'sessionId': 'session-id',
-        'amount': 5000,
+        'session_id': 'session_id',
+        'amount': 50000,
         'method': 'INVALID_METHOD'
     }
 
@@ -191,6 +191,6 @@ def test_validate_authority():
 
 
 def test_validate_amount():
-    Validator.validate_amount(1500)  # Valid case
+    Validator.validate_amount(15000)  # Valid case
     with pytest.raises(ValueError, match="Amount must be at least 1000."):
         Validator.validate_amount(500)  # Invalid case

@@ -1,10 +1,11 @@
-from src.zarinpal import ZarinPal
-from src.utils.Config import Config
+from zarinpal import ZarinPal
+from utils.Config import Config
 
 def inquire_transaction():
     try:
         config = Config(
-            merchant_id= "223baac2-92a4-4f09-a8bf-0e43dc5b1144",  
+            merchant_id= "Your merchant code",
+            
             sandbox=True,  
         )
         zarinpal = ZarinPal(config)
@@ -18,7 +19,7 @@ def inquire_transaction():
     except Exception as e:
         print("Error during inquiry:", e)
         if hasattr(e, "response"):
-            print("Error Details:", e.response.text)
+            print("Error Details:", e)
         else:
             print("No additional error details available.")
 
