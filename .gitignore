@@ -111,7 +111,7 @@ examples/env/
 examples/.venv/
 src/__pycache__/
 src/resources/__pycache__/
-src/utils/__pycache__/
+src/tools/__pycache__/
 src/errors/__pycache__/
 
 # Generated files

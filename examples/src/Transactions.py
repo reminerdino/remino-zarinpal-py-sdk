@@ -1,5 +1,5 @@
 from zarinpal import ZarinPal
-from utils.Config import Config
+from tools.Config import Config
 
 def get_transactions():
     try:

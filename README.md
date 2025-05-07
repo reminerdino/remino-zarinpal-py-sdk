@@ -82,7 +82,7 @@ pip install -i https://test.pypi.org/simple/ zarinpal-py-sdk
 
 ```bash
 from zarinpal import ZarinPal  
-from utils.Config import Config  
+from tools.Config import Config  
 
 config = Config(  
     access_token="YourAccessToken",  
@@ -94,7 +94,7 @@ zarinpal = ZarinPal(config)
 Full Example: Fetching Transactions
 
 from zarinpal import ZarinPal  
-from utils.Config import Config  
+from tools.Config import Config  
 
 def get_transactions():  
     try:  

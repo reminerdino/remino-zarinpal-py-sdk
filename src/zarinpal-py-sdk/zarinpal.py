@@ -1,6 +1,6 @@
 import requests
 from typing import Optional
-from utils.Config import Config
+from tools.Config import Config
 import logging
 
 

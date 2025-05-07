@@ -1,8 +1,8 @@
 import pytest
 import requests_mock
-from utils.Config import Config
+from tools.Config import Config
 from zarinpal import ZarinPal
-from utils.Validator import Validator
+from tools.Validator import Validator
 
 
 
